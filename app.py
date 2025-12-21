@@ -129,13 +129,16 @@ def index():
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
+  conversation_id = None
+  conversations = None
+  
   try:
     data = request.json
     user_message = data.get('message', '')
     conversation_id = data.get('conversation_id')
     
     if not user_message:
-      return jsonify({'error': 'Message is required'}), 400
+      return jsonify({'error': 'Message is required', 'is_critical': False}), 400
     
     conversations = load_conversations()
     
@@ -150,7 +153,7 @@ def chat():
     
     conversation = conversations.get(conversation_id)
     if not conversation:
-      return jsonify({'error': 'Conversation not found'}), 404
+      return jsonify({'error': 'Conversation missing', 'is_critical': False}), 404
     
     conversation['messages'].append({
       'role': 'user',
@@ -186,10 +189,12 @@ def chat():
       
       if response.candidates[0].content.parts:
         for part in response.candidates[0].content.parts:
-          if hasattr(part, 'function_call'):
+          if hasattr(part, 'function_call') and part.function_call:
             function_call = part.function_call
-            function_name = function_call.name
-            function_args = dict(function_call.args)
+            function_name = function_call.name if hasattr(function_call, 'name') and function_call.name else None
+            if not function_name:
+              continue
+            function_args = dict(function_call.args) if hasattr(function_call, 'args') else {}
             
             result = execute_function_call(function_name, function_args)
             function_results.append(result)
@@ -236,7 +241,35 @@ def chat():
     })
   
   except Exception as e:
-    return jsonify({'error': str(e)}), 500
+    error_message = str(e)
+    is_critical = True
+    
+    if 'rate' in error_message.lower() or 'quota' in error_message.lower() or 'limit' in error_message.lower():
+      is_critical = False
+      error_message = 'Rate limit reached. Please wait a moment and try again.'
+    elif 'timeout' in error_message.lower() or 'connection' in error_message.lower():
+      is_critical = False
+      error_message = 'Connection issue. Please try again.'
+    
+    if conversation_id and conversations:
+      try:
+        conversation = conversations.get(conversation_id)
+        if conversation:
+          conversation['messages'].append({
+            'role': 'error',
+            'content': error_message,
+            'is_critical': is_critical,
+            'timestamp': datetime.now().isoformat()
+          })
+          save_conversations(conversations)
+      except:
+        pass
+    
+    return jsonify({
+      'error': error_message,
+      'is_critical': is_critical,
+      'conversation_id': conversation_id
+    }), 500
 
 @app.route('/api/conversations', methods=['GET'])
 def get_conversations():
@@ -266,7 +299,7 @@ def get_conversation(conversation_id):
     conversation = conversations.get(conversation_id)
     
     if not conversation:
-      return jsonify({'error': 'Conversation not found'}), 404
+      return jsonify({'error': 'Conversation missing'}), 404
     
     return jsonify(conversation)
   
@@ -279,7 +312,7 @@ def delete_conversation(conversation_id):
     conversations = load_conversations()
     
     if conversation_id not in conversations:
-      return jsonify({'error': 'Conversation not found'}), 404
+      return jsonify({'error': 'Conversation missing'}), 404
     
     del conversations[conversation_id]
     save_conversations(conversations)

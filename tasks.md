@@ -1,15 +1,27 @@
 
-- [ ] bg color of left sidebar a little nicer (darker)
+- maybe simulate
+  - [ ] verify: non critical errors are part of conversation and replaced when resolved (e.g. second try)
+  - [ ] verify: critical errors full error page
+- [ ] make the bg color of the left sidebar a little darker (nicer)
 
 - [ ]
-  In conversations when there is an app error keep non critical errors as part as the conversation until they are solved
 
-where an error appears are missing in the sidebar
+Error handling updates:
+
+Resolvable errors:
+
+In conversations when there is an app error keep non critical errors as part as the conversation. Remove the error if it can be solved through further user action. Sample for a situation like this: the LLM responds that it has woo many requests, then the user enters a prompt a second time and it works.
+
+Currently conversations that have an error aren't persistent in the sidebar. Keep them there.
+
+Critical errors:
+
+If there is a critical app error so that the app can't work, replace the full html body with an error page (the app stops).
 
 - [ ] Whan I just write 'la'
 
-  Error:
-  'NoneType' object has no attribute 'name'
+Error:
+'NoneType' object has no attribute 'name'
 
 - [ ] Verify if we already satisfy this requirement:
 

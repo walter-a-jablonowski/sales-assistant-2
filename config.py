@@ -6,7 +6,7 @@ load_dotenv()
 class Config:
   SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production'
   DB_PATH = 'sales.db'
-  DEBUG = True
+  DEBUG = False
   SHOW_SQL_QUERIES = True
   GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
   

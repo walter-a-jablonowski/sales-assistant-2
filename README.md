@@ -23,7 +23,7 @@ pip install -r requirements.txt
 GOOGLE_API_KEY=your_api_key_here
 ```
 
-3. Initialize the database (if not already done):
+3. Initialize the database:
 ```bash
 python init_db.py
 ```

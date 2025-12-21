@@ -610,6 +610,73 @@ tbody tr:hover {
   background: #dc2626;
 }
 
+.critical-error-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #1a1a1f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.critical-error-content {
+  max-width: 500px;
+  padding: 48px;
+  text-align: center;
+  background: #2a2b32;
+  border-radius: 16px;
+  border: 1px solid #565869;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.critical-error-icon {
+  font-size: 64px;
+  margin-bottom: 24px;
+  color: #fca5a5;
+}
+
+.critical-error-content h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #ececf1;
+  margin-bottom: 16px;
+}
+
+.critical-error-message {
+  font-size: 16px;
+  color: #f48989;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.critical-error-help {
+  font-size: 14px;
+  color: #c5c5d2;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.btn-reload {
+  padding: 12px 24px;
+  background: #ececf1;
+  color: #353740;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-reload:hover {
+  background: #d9d9e3;
+  transform: translateY(-1px);
+}
+
 @media (max-width: 768px) {
   .sidebar {
     width: 240px;
@@ -634,5 +701,10 @@ tbody tr:hover {
   
   .welcome-message ul {
     grid-template-columns: 1fr;
+  }
+  
+  .critical-error-content {
+    padding: 32px 24px;
+    margin: 20px;
   }
 }

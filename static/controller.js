@@ -113,6 +113,10 @@ async function loadConversation(conversationId)
       {
         addAssistantMessage(msg.content, msg.function_results || []);
       }
+      else if( msg.role === 'error' )
+      {
+        addErrorMessage(msg.content, msg.is_critical || false);
+      }
     });
     
     document.querySelectorAll('.conversation-item').forEach(item =>
@@ -249,14 +253,28 @@ async function handleSubmit(e)
     }
     else
     {
-      showError(data.error || 'An error occurred');
+      const isCritical = data.is_critical !== false;
+      
+      if( isCritical )
+      {
+        showCriticalError(data.error || 'A critical error occurred');
+        return;
+      }
+      
+      if( data.conversation_id )
+      {
+        currentConversationId = data.conversation_id;
+        loadConversations();
+      }
+      
+      addErrorMessage(data.error || 'An error occurred', false);
     }
   }
   catch( error )
   {
     loadingDiv.remove();
     console.error('Error:', error);
-    showError('Failed to send message. Please try again.');
+    showCriticalError('Failed to send message. Please check your connection and try again.');
   }
   finally
   {
@@ -409,7 +427,7 @@ function addLoadingMessage()
   return loadingDiv;
 }
 
-function showError(message)
+function addErrorMessage(message, isCritical)
 {
   const chatMessages = document.getElementById('chat-messages');
   
@@ -417,14 +435,29 @@ function showError(message)
   errorDiv.className = 'message assistant-message';
   errorDiv.innerHTML = `
     <div class="message-content">
-      <div class="error-message">
-        <strong>Error:</strong> ${escapeHtml(message)}
+      <div class="error-message ${isCritical ? 'critical-error' : ''}">
+        <strong>${isCritical ? 'Critical Error' : 'Error'}:</strong> ${escapeHtml(message)}
       </div>
     </div>
   `;
   
   chatMessages.appendChild(errorDiv);
   scrollToBottom();
+}
+
+function showCriticalError(message)
+{
+  document.body.innerHTML = `
+    <div class="critical-error-page">
+      <div class="critical-error-content">
+        <div class="critical-error-icon">⚠</div>
+        <h1>Critical Error</h1>
+        <p class="critical-error-message">${escapeHtml(message)}</p>
+        <p class="critical-error-help">The application encountered a critical error and can't continue. Please refresh the page to try again.</p>
+        <button class="btn-reload" onclick="location.reload()">Reload Application</button>
+      </div>
+    </div>
+  `;
 }
 
 function scrollToBottom()
