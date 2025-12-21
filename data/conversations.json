@@ -1,0 +1,230 @@
+{
+  "18925152-8db3-4c6b-bb3d-b9b24cb33151": {
+    "id": "18925152-8db3-4c6b-bb3d-b9b24cb33151",
+    "title": "What are the top 5 customers by total order value?",
+    "created_at": "2025-12-18T20:40:11.735857",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What are the top 5 customers by total order value?",
+        "timestamp": "2025-12-18T20:40:11.735857"
+      },
+      {
+        "role": "assistant",
+        "content": "",
+        "function_results": [
+          {
+            "type": "text",
+            "content": "\nTable: customers\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - name: TEXT NOT NULL\n  - email: TEXT NOT NULL\n  - phone: TEXT\n  - city: TEXT\n  - country: TEXT\n  - created_at: TEXT NOT NULL\n\nTable: order_items\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - order_id: INTEGER NOT NULL\n  - product_id: INTEGER NOT NULL\n  - quantity: INTEGER NOT NULL\n  - unit_price: REAL NOT NULL\n  - subsum: REAL NOT NULL\n\nTable: orders\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - customer_id: INTEGER NOT NULL\n  - order_date: TEXT NOT NULL\n  - status: TEXT NOT NULL\n  - amount_sum: REAL NOT NULL\n\nTable: products\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - name: TEXT NOT NULL\n  - category: TEXT NOT NULL\n  - price: REAL NOT NULL\n  - stock_quantity: INTEGER NOT NULL\n  - created_at: TEXT NOT NULL\n\nTable: sqlite_sequence\nColumns:\n  - name: \n  - seq: "
+          },
+          {
+            "type": "table",
+            "query": "\nSELECT\n  c.name,\n  SUM(o.amount_sum) AS total_order_value\nFROM customers AS c\nJOIN orders AS o\n  ON c.id = o.customer_id\nGROUP BY\n  c.name\nORDER BY\n  total_order_value DESC\nLIMIT 5;\n",
+            "columns": [
+              "name",
+              "total_order_value"
+            ],
+            "rows": [
+              [
+                "Northern Enterprises",
+                "45314.03"
+              ],
+              [
+                "Midwest Manufacturing",
+                "45121.11"
+              ],
+              [
+                "Pacific Rim Industries",
+                "44311.45999999999"
+              ],
+              [
+                "Acme Corporation",
+                "42436.66"
+              ],
+              [
+                "European Imports Ltd",
+                "39838.119999999995"
+              ]
+            ],
+            "row_count": 5
+          }
+        ],
+        "timestamp": "2025-12-18T20:40:15.117807"
+      }
+    ]
+  },
+  "d0b8e85f-ea6c-4b83-a0a8-11f3f9cc2594": {
+    "id": "d0b8e85f-ea6c-4b83-a0a8-11f3f9cc2594",
+    "title": "What are the top 5 customers by total order value?",
+    "created_at": "2025-12-18T20:48:13.911286",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What are the top 5 customers by total order value?",
+        "timestamp": "2025-12-18T20:48:13.911286"
+      },
+      {
+        "role": "assistant",
+        "content": "",
+        "function_results": [
+          {
+            "type": "text",
+            "content": "\nTable: customers\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - name: TEXT NOT NULL\n  - email: TEXT NOT NULL\n  - phone: TEXT\n  - city: TEXT\n  - country: TEXT\n  - created_at: TEXT NOT NULL\n\nTable: order_items\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - order_id: INTEGER NOT NULL\n  - product_id: INTEGER NOT NULL\n  - quantity: INTEGER NOT NULL\n  - unit_price: REAL NOT NULL\n  - subsum: REAL NOT NULL\n\nTable: orders\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - customer_id: INTEGER NOT NULL\n  - order_date: TEXT NOT NULL\n  - status: TEXT NOT NULL\n  - amount_sum: REAL NOT NULL\n\nTable: products\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - name: TEXT NOT NULL\n  - category: TEXT NOT NULL\n  - price: REAL NOT NULL\n  - stock_quantity: INTEGER NOT NULL\n  - created_at: TEXT NOT NULL\n\nTable: sqlite_sequence\nColumns:\n  - name: \n  - seq: "
+          },
+          {
+            "type": "table",
+            "query": "\nSELECT\n  c.name,\n  SUM(o.amount_sum) AS total_order_value\nFROM customers AS c\nJOIN orders AS o\n  ON c.id = o.customer_id\nGROUP BY\n  c.name\nORDER BY\n  total_order_value DESC\nLIMIT 5;\n",
+            "columns": [
+              "name",
+              "total_order_value"
+            ],
+            "rows": [
+              [
+                "Northern Enterprises",
+                "45314.03"
+              ],
+              [
+                "Midwest Manufacturing",
+                "45121.11"
+              ],
+              [
+                "Pacific Rim Industries",
+                "44311.45999999999"
+              ],
+              [
+                "Acme Corporation",
+                "42436.66"
+              ],
+              [
+                "European Imports Ltd",
+                "39838.119999999995"
+              ]
+            ],
+            "row_count": 5
+          }
+        ],
+        "timestamp": "2025-12-18T20:48:18.854184"
+      }
+    ]
+  },
+  "0bb8759e-476b-4ca8-950f-fa261b925a50": {
+    "id": "0bb8759e-476b-4ca8-950f-fa261b925a50",
+    "title": "Show me all products in the Electronics category",
+    "created_at": "2025-12-18T21:07:19.653353",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Show me all products in the Electronics category",
+        "timestamp": "2025-12-18T21:07:19.653353"
+      },
+      {
+        "role": "assistant",
+        "content": "",
+        "function_results": [
+          {
+            "type": "text",
+            "content": "\nTable: customers\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - name: TEXT NOT NULL\n  - email: TEXT NOT NULL\n  - phone: TEXT\n  - city: TEXT\n  - country: TEXT\n  - created_at: TEXT NOT NULL\n\nTable: order_items\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - order_id: INTEGER NOT NULL\n  - product_id: INTEGER NOT NULL\n  - quantity: INTEGER NOT NULL\n  - unit_price: REAL NOT NULL\n  - subsum: REAL NOT NULL\n\nTable: orders\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - customer_id: INTEGER NOT NULL\n  - order_date: TEXT NOT NULL\n  - status: TEXT NOT NULL\n  - amount_sum: REAL NOT NULL\n\nTable: products\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - name: TEXT NOT NULL\n  - category: TEXT NOT NULL\n  - price: REAL NOT NULL\n  - stock_quantity: INTEGER NOT NULL\n  - created_at: TEXT NOT NULL\n\nTable: sqlite_sequence\nColumns:\n  - name: \n  - seq: "
+          },
+          {
+            "type": "table",
+            "query": "SELECT name FROM products WHERE category = 'Electronics'",
+            "columns": [
+              "name"
+            ],
+            "rows": [
+              [
+                "Laptop Pro 15\""
+              ],
+              [
+                "Wireless Mouse"
+              ],
+              [
+                "USB-C Hub"
+              ],
+              [
+                "Monitor 27\" 4K"
+              ],
+              [
+                "Keyboard Mechanical"
+              ],
+              [
+                "Webcam HD"
+              ],
+              [
+                "Headphones Noise-Canceling"
+              ],
+              [
+                "Tablet 10\""
+              ],
+              [
+                "Printer All-in-One"
+              ]
+            ],
+            "row_count": 9
+          }
+        ],
+        "timestamp": "2025-12-18T21:07:22.902688"
+      }
+    ]
+  },
+  "77f14edd-65fe-46f8-8699-65e95c9f53b9": {
+    "id": "77f14edd-65fe-46f8-8699-65e95c9f53b9",
+    "title": "Show me all products in the Electronics category",
+    "created_at": "2025-12-18T21:07:49.956371",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Show me all products in the Electronics category",
+        "timestamp": "2025-12-18T21:07:49.956371"
+      },
+      {
+        "role": "assistant",
+        "content": "",
+        "function_results": [
+          {
+            "type": "text",
+            "content": "\nTable: customers\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - name: TEXT NOT NULL\n  - email: TEXT NOT NULL\n  - phone: TEXT\n  - city: TEXT\n  - country: TEXT\n  - created_at: TEXT NOT NULL\n\nTable: order_items\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - order_id: INTEGER NOT NULL\n  - product_id: INTEGER NOT NULL\n  - quantity: INTEGER NOT NULL\n  - unit_price: REAL NOT NULL\n  - subsum: REAL NOT NULL\n\nTable: orders\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - customer_id: INTEGER NOT NULL\n  - order_date: TEXT NOT NULL\n  - status: TEXT NOT NULL\n  - amount_sum: REAL NOT NULL\n\nTable: products\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - name: TEXT NOT NULL\n  - category: TEXT NOT NULL\n  - price: REAL NOT NULL\n  - stock_quantity: INTEGER NOT NULL\n  - created_at: TEXT NOT NULL\n\nTable: sqlite_sequence\nColumns:\n  - name: \n  - seq: "
+          },
+          {
+            "type": "table",
+            "query": "SELECT name FROM products WHERE category = 'Electronics'",
+            "columns": [
+              "name"
+            ],
+            "rows": [
+              [
+                "Laptop Pro 15\""
+              ],
+              [
+                "Wireless Mouse"
+              ],
+              [
+                "USB-C Hub"
+              ],
+              [
+                "Monitor 27\" 4K"
+              ],
+              [
+                "Keyboard Mechanical"
+              ],
+              [
+                "Webcam HD"
+              ],
+              [
+                "Headphones Noise-Canceling"
+              ],
+              [
+                "Tablet 10\""
+              ],
+              [
+                "Printer All-in-One"
+              ]
+            ],
+            "row_count": 9
+          }
+        ],
+        "timestamp": "2025-12-18T21:07:52.419138"
+      }
+    ]
+  }
+}

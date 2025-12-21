@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales Assistant</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <button id="new-chat-btn" class="btn-new-chat">New Chat</button>
+      </div>
+      <div id="conversation-list" class="conversation-list">
+      </div>
+    </aside>
+
+    <main class="chat-container">
+      <div class="chat-header">
+        <h1>Sales Data Assistant</h1>
+      </div>
+
+      <div id="chat-messages" class="chat-messages">
+        <div class="welcome-message">
+          <h2>Welcome to Sales Assistant</h2>
+          <p>Ask me anything about your sales data. For example:</p>
+          <ul>
+            <li>What are the top 5 customers by order value?</li>
+            <li>Show me all products in the Electronics category</li>
+            <li>What were the sales sum last month?</li>
+            <li>Which products have low stock?</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="chat-input-container">
+        <form id="chat-form">
+          <input 
+            type="text" 
+            id="user-input" 
+            placeholder="Ask a question about your sales data..." 
+            autocomplete="off"
+            required
+          >
+          <button type="submit" id="send-btn" aria-label="Send message"></button>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='controller.js') }}"></script>
+</body>
+</html>
