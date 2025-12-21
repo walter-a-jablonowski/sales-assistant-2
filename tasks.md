@@ -1,27 +1,18 @@
 
-- maybe simulate
-  - [ ] verify: non critical errors are part of conversation and replaced when resolved (e.g. second try)
-  - [ ] verify: critical errors full error page
-- [ ] make the bg color of the left sidebar a little darker (nicer)
+See also
+
+- AI Biz > Sell AI apps
+
 
 - [ ]
 
-Error handling updates:
+  Currently I only see SQL an a table in the chat response. Make the LLM also say a few words as a summary for the result.
 
-Resolvable errors:
+- maybe simulate
 
-In conversations when there is an app error keep non critical errors as part as the conversation. Remove the error if it can be solved through further user action. Sample for a situation like this: the LLM responds that it has woo many requests, then the user enters a prompt a second time and it works.
+  - [x] verify: non critical errors are part of conversation and replaced when resolved (e.g. second try)
+  - [ ] verify: critical errors full error page
 
-Currently conversations that have an error aren't persistent in the sidebar. Keep them there.
-
-Critical errors:
-
-If there is a critical app error so that the app can't work, replace the full html body with an error page (the app stops).
-
-- [ ] Whan I just write 'la'
-
-Error:
-'NoneType' object has no attribute 'name'
 
 - [ ] Verify if we already satisfy this requirement:
 
@@ -41,6 +32,35 @@ Error:
 
 Done
 ----------------------------------------------------------
+
+### 2025-12-21
+
+- [x]
+
+  When I set DEBUG = False the SQL query is still visible in the chat output. Show SQL only when debug is true.
+
+- [x] make the bg color of the left sidebar a little darker (nicer)
+
+- [x]
+
+  Error handling updates:
+
+  Resolvable errors:
+
+  In conversations when there is an app error keep non critical errors as part as the conversation. Remove the error if it can be solved through further user action. Sample for a situation like this: the LLM responds that it has woo many requests, then the user enters a prompt a second time and it works.
+
+  Currently conversations that have an error aren't persistent in the sidebar. Keep them there.
+
+  Critical errors:
+
+  If there is a critical app error so that the app can't work, replace the full html body with an error page (the app stops).
+
+- [x] Whan I just write 'la'
+
+  Error:
+  'NoneType' object has no attribute 'name'
+
+### Before
 
 - [x]
 
