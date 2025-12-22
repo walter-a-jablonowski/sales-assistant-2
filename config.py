@@ -4,17 +4,24 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-  SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production'
-  DB_PATH = 'sales.db'
-  DEBUG = False
-  SHOW_SQL_QUERIES = True
-  GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
+
+  SECRET_KEY         = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production'
+  DB_PATH            = 'sales.db'
+  DEBUG              = False
+  SHOW_SQL_QUERIES   = True
   
-  GEMINI_MODEL = 'gemini-2.5-flash'
-  MAX_ITERATIONS = 5
+  LLM_PROVIDER       = os.environ.get('LLM_PROVIDER', 'gemini')
+  
+  GOOGLE_API_KEY     = os.environ.get('GOOGLE_API_KEY')
+  GEMINI_MODEL       = 'gemini-2.5-flash'
+  
+  OLLAMA_BASE_URL    = os.environ.get('OLLAMA_BASE_URL', 'http://localhost:11434')
+  OLLAMA_MODEL       = os.environ.get('OLLAMA_MODEL', 'llama3.2')
+  
+  MAX_ITERATIONS     = 5
   CONVERSATIONS_FILE = 'data/conversations.json'
   
-  SYSTEM_PROMPT = '''You are an expert Sales Data Analyst and BI Assistant. You have direct access to a SQLite sales database.
+  SYSTEM_PROMPT      = '''You are an expert Sales Data Analyst and BI Assistant. You have direct access to a SQLite sales database.
 
 CORE RESPONSIBILITIES:
 1. Analyze sales questions and convert them into efficient SQL queries.

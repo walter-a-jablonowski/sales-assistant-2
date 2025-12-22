@@ -4,9 +4,22 @@ See also
 - AI Biz > Sell AI apps
 
 
-- [ ]
+Qwen2.5-coder
+gemma3:12b
+gemma3
+mistral:7b
 
-  Currently I only see SQL an a table in the chat response. Make the LLM also say a few words as a summary for the result.
+- [ ] add a limited gemini uses in this demo msg
+
+- [ ] upgrade so that we can also work with ollama
+  ```
+I need to upgeade this app so tht beside the gemini flash model that we are currently using it also must be usable with ollama and a configurable local model. We use config.py to choose whether we want to use a local model or an online provider like gemini.
+  ```
+- [ ] max it prod was 5
+- [ ] maybe make a second (cooler) UI design
+
+
+### Make solid
 
 - maybe simulate
 
@@ -14,7 +27,8 @@ See also
   - [ ] verify: critical errors full error page
 
 
-- [ ] Verify if we already satisfy this requirement:
+- [ ] see minor code tasks
+- [x] Verify if we already satisfy this requirement:
 
   To ensure that the LLM writes valid SQL, ensure that:
 
@@ -29,9 +43,16 @@ See also
       if column not in schema[table]:
         reject
     ```
+    (Verified: `db_helpers.py` contains `validate_sql_against_schema` which checks tables and columns against the schema before execution)
 
 Done
 ----------------------------------------------------------
+
+### 2025-12-22
+
+- [x]
+
+  Currently I only see SQL an a table in the chat response. Make the LLM also say a few words as a summary for the result.
 
 ### 2025-12-21
 

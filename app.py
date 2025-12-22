@@ -1,16 +1,16 @@
 from flask import Flask, render_template, request, jsonify, session
-import google.genai as genai
 from config import config
 import db_helpers
 import json
 import uuid
 from datetime import datetime
 import os
+from llm_provider import create_llm_provider
 
 app = Flask(__name__)
-app.config.from_object(config['development'])
+app.config.from_object(config['development'])  # tASK: what about production?
 
-client = genai.Client(api_key=app.config['GOOGLE_API_KEY'])
+llm_client = create_llm_provider(app.config['LLM_PROVIDER'], config['development'])
 
 tools = [
   {
@@ -170,13 +170,10 @@ def chat():
     
     chat_history.append({'role': 'user', 'parts': [{'text': user_message}]})
     
-    response = client.models.generate_content(
-      model=app.config['GEMINI_MODEL'],
+    response = llm_client.generate_content(
       contents=chat_history,
-      config={
-        'system_instruction': app.config['SYSTEM_PROMPT'],
-        'tools': [{'function_declarations': tools}]
-      }
+      system_instruction=app.config['SYSTEM_PROMPT'],
+      tools=[{'function_declarations': tools}]
     )
     
     function_results = []
@@ -217,13 +214,10 @@ def chat():
               }]
             })
             
-        response = client.models.generate_content(
-          model=app.config['GEMINI_MODEL'],
+        response = llm_client.generate_content(
           contents=chat_history,
-          config={
-            'system_instruction': app.config['SYSTEM_PROMPT'],
-            'tools': [{'function_declarations': tools}]
-          }
+          system_instruction=app.config['SYSTEM_PROMPT'],
+          tools=[{'function_declarations': tools}]
         )
       else:
         break
