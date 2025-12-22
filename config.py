@@ -11,7 +11,7 @@ class Config:
   GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
   
   GEMINI_MODEL = 'gemini-2.5-flash'
-  MAX_ITERATIONS = 2
+  MAX_ITERATIONS = 5
   CONVERSATIONS_FILE = 'data/conversations.json'
   
   SYSTEM_PROMPT = '''You are an expert Sales Data Analyst and BI Assistant. You have direct access to a SQLite sales database.
@@ -43,7 +43,7 @@ RESPONSE STYLE:
 class ProductionConfig(Config):
   DEBUG = False
   SHOW_SQL_QUERIES = False
-  MAX_ITERATIONS = 2
+  MAX_ITERATIONS = 5
 
 class DevelopmentConfig(Config):
   DEBUG = True

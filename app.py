@@ -187,10 +187,17 @@ def chat():
     while iteration < app.config['MAX_ITERATIONS']:
       iteration += 1
       
+      current_function_calls = []
+      
       if response.candidates[0].content.parts:
         for part in response.candidates[0].content.parts:
           if hasattr(part, 'function_call') and part.function_call:
-            function_call = part.function_call
+            current_function_calls.append(part.function_call)
+          elif hasattr(part, 'text'):
+            assistant_text += part.text
+            
+      if current_function_calls:
+        for function_call in current_function_calls:
             function_name = function_call.name if hasattr(function_call, 'name') and function_call.name else None
             if not function_name:
               continue
@@ -210,19 +217,15 @@ def chat():
               }]
             })
             
-            response = client.models.generate_content(
-              model=app.config['GEMINI_MODEL'],
-              contents=chat_history,
-              config={
-                'system_instruction': app.config['SYSTEM_PROMPT'],
-                'tools': [{'function_declarations': tools}]
-              }
-            )
-          
-          elif hasattr(part, 'text'):
-            assistant_text += part.text
-      
-      if not any(hasattr(part, 'function_call') for part in response.candidates[0].content.parts):
+        response = client.models.generate_content(
+          model=app.config['GEMINI_MODEL'],
+          contents=chat_history,
+          config={
+            'system_instruction': app.config['SYSTEM_PROMPT'],
+            'tools': [{'function_declarations': tools}]
+          }
+        )
+      else:
         break
     
     conversation['messages'].append({
