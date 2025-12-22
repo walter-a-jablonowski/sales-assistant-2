@@ -21,6 +21,10 @@ class Config:
   MAX_ITERATIONS     = 5
   CONVERSATIONS_FILE = 'data/conversations.json'
   
+  @property
+  def SHOW_LIMITED_AI_WARNING(self):
+    return self.LLM_PROVIDER == 'gemini'
+  
   SYSTEM_PROMPT      = '''You are an expert Sales Data Analyst and BI Assistant. You have direct access to a SQLite sales database.
 
 CORE RESPONSIBILITIES:

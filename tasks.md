@@ -11,12 +11,6 @@ See also
   gemma3
   mistral:7b
 
-- [ ] add a limited gemini uses in this demo msg (config arg)
-  ```
-  
-  ```
-
-- [ ] responsive
 - [ ] maybe make a second (cooler) UI design (keep current for dev demo)
 - [ ] max it prod was 5
 
@@ -53,6 +47,13 @@ Done
 ----------------------------------------------------------
 
 ### 2025-12-22
+
+- [x] add a limited gemini uses in this demo msg (config arg)
+  ```
+  Add a message "Limited AI use" in the chat-header right aligned. Make it red. Show this message only when a new config entry is set to true. Set it true when the LLM is gemini.
+  ```
+
+- [x] responsive
 
 - [x] upgrade so that we can also work with ollama
   ```

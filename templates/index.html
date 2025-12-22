@@ -22,6 +22,9 @@
       <div class="chat-header">
         <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button>
         <h1>Sales Data Assistant</h1>
+        {% if show_limited_ai_warning %}
+        <span class="limited-ai-warning">Limited AI use</span>
+        {% endif %}
       </div>
 
       <div id="chat-messages" class="chat-messages">
