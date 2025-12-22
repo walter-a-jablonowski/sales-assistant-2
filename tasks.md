@@ -4,30 +4,34 @@ See also
 - AI Biz > Sell AI apps
 
 
-Qwen2.5-coder
-gemma3:12b
-gemma3
-mistral:7b
+- [ ]
 
-- [ ] add a limited gemini uses in this demo msg
+  Qwen2.5-coder
+  gemma3:12b
+  gemma3
+  mistral:7b
 
-- [ ] upgrade so that we can also work with ollama
+- [ ] add a limited gemini uses in this demo msg (config arg)
   ```
-I need to upgeade this app so tht beside the gemini flash model that we are currently using it also must be usable with ollama and a configurable local model. We use config.py to choose whether we want to use a local model or an online provider like gemini.
+  
   ```
+
+- [ ] responsive
+- [ ] maybe make a second (cooler) UI design (keep current for dev demo)
 - [ ] max it prod was 5
-- [ ] maybe make a second (cooler) UI design
 
 
 ### Make solid
+
+- [ ] try stuff
+
+- [ ] see minor code tasks
 
 - maybe simulate
 
   - [x] verify: non critical errors are part of conversation and replaced when resolved (e.g. second try)
   - [ ] verify: critical errors full error page
 
-
-- [ ] see minor code tasks
 - [x] Verify if we already satisfy this requirement:
 
   To ensure that the LLM writes valid SQL, ensure that:
@@ -49,6 +53,11 @@ Done
 ----------------------------------------------------------
 
 ### 2025-12-22
+
+- [x] upgrade so that we can also work with ollama
+  ```
+  I need to upgeade this app so tht beside the gemini flash model that we are currently using it also must be usable with ollama and a configurable local model. We use config.py to choose whether we want to use a local model or an online provider like gemini.
+  ```
 
 - [x]
 

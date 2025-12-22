@@ -17,8 +17,40 @@ document.addEventListener('DOMContentLoaded', () =>
     }
   });
   
+  setupMobileMenu();
   attachSampleQuestionListeners();
 });
+
+function setupMobileMenu()
+{
+  const menuToggle = document.getElementById('menu-toggle');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  
+  menuToggle.addEventListener('click', () =>
+  {
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('active');
+  });
+  
+  overlay.addEventListener('click', () =>
+  {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+  });
+}
+
+function closeMobileMenu()
+{
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  
+  if( sidebar.classList.contains('open') )
+  {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+  }
+}
 
 function attachSampleQuestionListeners()
 {
@@ -95,6 +127,8 @@ async function loadConversation(conversationId)
 {
   try
   {
+    closeMobileMenu();
+    
     const response = await fetch(`/api/conversations/${conversationId}`);
     const conversation = await response.json();
     
@@ -180,6 +214,8 @@ async function deleteConversation(conversationId)
 
 function startNewChat()
 {
+  closeMobileMenu();
+  
   currentConversationId = null;
   
   const chatMessages = document.getElementById('chat-messages');
