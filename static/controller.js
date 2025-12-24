@@ -366,7 +366,7 @@ function addAssistantMessage(content, functionResults)
   
   if( content )
   {
-    html += `<div class="message-text">${escapeHtml(content)}</div>`;
+    html += `<div class="message-text">${markdownToHtml(content)}</div>`;
   }
   
   html += '</div>';
@@ -507,6 +507,22 @@ function escapeHtml(text)
   const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
+}
+
+function markdownToHtml(text)
+{
+  if( !text )
+    return '';
+  
+  let html = escapeHtml(text);
+  
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  html = html.replace(/_(.+?)_/g, '<em>$1</em>');
+  html = html.replace(/`(.+?)`/g, '<code>$1</code>');
+  html = html.replace(/\n/g, '<br>');
+  
+  return html;
 }
 
 function formatDate(isoString)

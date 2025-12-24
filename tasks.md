@@ -4,12 +4,36 @@ See also
 - AI Biz > Sell AI apps
 
 
+- [ ] maybe tell the ai in the prompt that it may use markdown
+  - simple rendering added, maybe use te one from overview
+- [ ] add a quick diagramming feature?
+
 - [ ]
 
-  Qwen2.5-coder
-  gemma3:12b
-  gemma3
-  mistral:7b
+  - duckdb-nsql:7b
+
+  - [ ] llama3.2       returns only some json with current prompt
+  
+  - [x] Qwen2.5-coder  less good with current prompt
+  - [-] gemma3:12b     
+  - [-] gemma3         no support for tools
+  - [ ] mistral:7b     
+
+  Ollama has cloud models you can run via Ollama CLI without local GPU limits:
+  https://ollama.com/blog/cloud-models?utm_source=chatgpt.com
+
+  - https://ollama.com/library/gemini-3-flash-preview
+  - lmsys coder
+    - https://ollama.com/library/glm-4.6
+    - https://ollama.com/library/kimi-k2-thinking
+    - https://ollama.com/library/kimi-k2
+    - https://ollama.com/library/minimax-m2
+    - https://ollama.com/library/qwen3-coder 480b
+
+  - qwen3-coder:480b-cloud
+  - gpt-oss:120b-cloud
+  - deepseek-v3.1:671b-cloud 
+
 
 - [ ] maybe make a second (cooler) UI design (keep current for dev demo)
 - [ ] max it prod was 5
@@ -20,11 +44,6 @@ See also
 - [ ] try stuff
 
 - [ ] see minor code tasks
-
-- maybe simulate
-
-  - [x] verify: non critical errors are part of conversation and replaced when resolved (e.g. second try)
-  - [ ] verify: critical errors full error page
 
 - [x] Verify if we already satisfy this requirement:
 
@@ -47,6 +66,11 @@ Done
 ----------------------------------------------------------
 
 ### 2025-12-22
+
+- maybe simulate
+
+  - [x] verify: non critical errors are part of conversation and replaced when resolved (e.g. second try)
+  - [x] verify: critical errors full error page
 
 - [x] add a limited gemini uses in this demo msg (config arg)
   ```
