@@ -323,11 +323,6 @@ body {
   padding: 6px;
   border-radius: 4px;
   transition: all 0.2s;
-  opacity: 0;
-}
-
-.user-message:hover .edit-message-btn {
-  opacity: 1;
 }
 
 .edit-message-btn:hover {
@@ -377,12 +372,12 @@ body {
 }
 
 .edit-save-btn {
-  background: #10a37f;
-  color: white;
+  background: white;
+  color: #202123;
 }
 
 .edit-save-btn:hover:not(:disabled) {
-  background: #0d8f6f;
+  background: #ececf1;
 }
 
 .edit-save-btn:disabled {

@@ -23,7 +23,11 @@ class Config:
   
   @property
   def SHOW_LIMITED_AI_WARNING(self):
-    return self.LLM_PROVIDER == 'gemini'
+    if self.LLM_PROVIDER == 'gemini':
+      return True
+    if self.LLM_PROVIDER == 'ollama' and 'cloud' in self.OLLAMA_MODEL.lower():
+      return True
+    return False
   
   SYSTEM_PROMPT      = '''You are an expert Sales Data Analyst and BI Assistant. You have direct access to a SQLite sales database.
 

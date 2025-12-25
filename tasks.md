@@ -6,10 +6,7 @@ See also
 
 
 - [ ] Text output seems to be missing
-- [ ] There seems to be an empty message when I re-run a message
-  <div class="message assistant-message"><div class="message-content"></div></div>
 
-- [ ] maybe upd the limited ai use msg if limits in ollama as well
 - [ ] maybe tell the ai in the prompt that it may use markdown, so that it uses that every time
   - simple rendering added, maybe use te one from overview
 
@@ -21,21 +18,33 @@ See also
 
 - [ ]
 
-  - duckdb-nsql:7b
-
   - [-] llama3.2       returns only some json with current prompt
   
   - [x] Qwen2.5-coder  less good with current prompt
   - [-] gemma3:12b     
   - [-] gemma3         no support for tools
-  - [ ] mistral:7b     
+
+  Old
+
+  - [ ] qwen2.5-coder:14b
+  - [ ] glm4:latest
+
+  Spec
+
+  - [ ] duckdb-nsql:7b
 
   Capable local
 
-  - [ ] Llama 4 (Scout/Maverick)          67  -   245 GB
-  - [ ] GPT-OSS (120B)                    14  - >  65 GB
-  - [ ] DeepSeek-R1 (70B)         43 GB   5.2 -   404 GB
-  - [ ] Qwen3-coder
+  - [ ] deepseek-r1:8b
+  - [ ] gpt-oss:20b
+  - [ ] mistral:7b     (if available: mistral:7b-q4_k, quantization shrink VRAM + RAM needs drastically with minimal quality loss)
+
+  - too big
+
+    - [ ] Llama 4 (Scout/Maverick)          67  -   245 GB
+    - [ ] GPT-OSS (120B)                    14  - >  65 GB
+    - [ ] DeepSeek-R1 (70B)         43 GB   5.2 -   404 GB
+    - [ ] Qwen3-coder
 
   Ollama has cloud models you can run via Ollama CLI without local GPU limits:
   https://ollama.com/blog/cloud-models?utm_source=chatgpt.com
@@ -82,6 +91,18 @@ Done
 ----------------------------------------------------------
 
 ### 2025-12-25
+
+- [x] make edit-save-btn white
+- [x] keep edit-message-btn always visible
+- [x] upd the limited ai use msg if limits in ollama as well
+  update the property SHOW_LIMITED_AI_WARNING: returns true if LLM_PROVIDER == 'gemini' or when OLLAMA_MODEL contains "cloud"
+
+- [?] Unsure about that: Sometimes there seems to be an empty message when I re-run a message (maye when a message was send a second time)
+  <div class="message assistant-message"><div class="message-content"></div></div>
+
+- [x] add the currently used model to the placeholder of user-input
+
+- [x] edit-message-btn doesn't work when clicked
 
 - [x] ability to launch a question again
   ```

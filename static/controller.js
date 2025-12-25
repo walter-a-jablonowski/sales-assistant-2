@@ -338,7 +338,7 @@ function addUserMessage(content, messageIndex = null)
   messageDiv.innerHTML = `
     <div class="message-content">
       <div class="message-text">${escapeHtml(content)}</div>
-      <button class="edit-message-btn" onclick="editUserMessage(${messageIndex})" title="Edit and re-run">
+      <button class="edit-message-btn" title="Edit and re-run">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
@@ -346,6 +346,12 @@ function addUserMessage(content, messageIndex = null)
       </button>
     </div>
   `;
+  
+  const editBtn = messageDiv.querySelector('.edit-message-btn');
+  if( messageIndex !== null )
+  {
+    editBtn.addEventListener('click', () => editUserMessage(messageIndex));
+  }
   
   chatMessages.appendChild(messageDiv);
   scrollToBottom();
@@ -823,7 +829,10 @@ async function editUserMessage(messageIndex)
             const msg = updatedConversation.messages[i];
             if( msg.role === 'assistant' )
             {
-              addAssistantMessage(msg.content, msg.function_results || []);
+              if( msg.content || (msg.function_results && msg.function_results.length > 0) )
+              {
+                addAssistantMessage(msg.content, msg.function_results || []);
+              }
             }
             else if( msg.role === 'error' )
             {

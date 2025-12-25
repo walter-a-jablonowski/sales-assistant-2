@@ -183,9 +183,15 @@ def execute_function_call(function_name, function_args):
 
 @app.route('/')
 def index():
+  if app.config['LLM_PROVIDER'] == 'gemini':
+    model_name = app.config['GEMINI_MODEL']
+  else:
+    model_name = app.config['OLLAMA_MODEL']
+  
   return render_template('index.html', 
     show_limited_ai_warning=app.config['SHOW_LIMITED_AI_WARNING'],
-    demo_mode=app.config['DEMO_MODE'])
+    demo_mode=app.config['DEMO_MODE'],
+    model_name=model_name)
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
