@@ -16,52 +16,44 @@ See also
 
 - [ ] maybe make a second (cooler) UI design (keep current for dev demo)
 
-- [ ]
+### Models
 
-  - [-] llama3.2       returns only some json with current prompt
-  
-  - [x] Qwen2.5-coder  less good with current prompt
-  - [-] gemma3:12b     
-  - [-] gemma3         no support for tools
+- deepseek-r1:8b           smart for this machine but no tools
+- nomic-embed-text:latest
 
-  Old
+maybe Del
 
-  - [ ] qwen2.5-coder:14b
-  - [ ] glm4:latest
+- [x] Qwen2.5-coder        less good with current prompt
+- [-] llama3.2             returns only some json with current prompt
+- glm4:latest              if no good
+- qwen2.5-coder:14b        try if better as the smalle one
 
-  Spec
+Spec
 
-  - [ ] duckdb-nsql:7b
+- [ ] duckdb-nsql:7b
 
-  Capable local
+Capable local
+(if available: mistral:7b-q4_k, quantization shrink VRAM + RAM needs drastically with minimal quality loss)
 
-  - [ ] deepseek-r1:8b
-  - [ ] gpt-oss:20b
-  - [ ] mistral:7b     (if available: mistral:7b-q4_k, quantization shrink VRAM + RAM needs drastically with minimal quality loss)
+- [-] deepseek-r1:8b  no support for tools
+- [ ] gpt-oss:20b
+- [ ] mistral:7b      Partially tools, but isn't inherently optimized for tool calling like gpt-oss
 
-  - too big
+Ollama cloud (limits)
 
-    - [ ] Llama 4 (Scout/Maverick)          67  -   245 GB
-    - [ ] GPT-OSS (120B)                    14  - >  65 GB
-    - [ ] DeepSeek-R1 (70B)         43 GB   5.2 -   404 GB
-    - [ ] Qwen3-coder
-
-  Ollama has cloud models you can run via Ollama CLI without local GPU limits:
-  https://ollama.com/blog/cloud-models?utm_source=chatgpt.com
-
-  - large models
-    - https://ollama.com/library/gemini-3-flash-preview
-    - deepseek-v3.1:671b-cloud
-    - gpt-oss:120b-cloud
-    - qwen3-coder:480b-cloud
-    - Qwen3 (235B)
-    - Llama 3.1 (405B)
-  - lmsys coder
-    - https://ollama.com/library/glm-4.6
-    - https://ollama.com/library/kimi-k2-thinking
-    - https://ollama.com/library/kimi-k2
-    - https://ollama.com/library/minimax-m2
-    - https://ollama.com/library/qwen3-coder 480b
+- large models
+  - https://ollama.com/library/gemini-3-flash-preview
+  - deepseek-v3.1:671b-cloud
+  - gpt-oss:120b-cloud
+  - qwen3-coder:480b-cloud
+  - Qwen3 (235B)
+  - Llama 3.1 (405B)
+- lmsys coder
+  - https://ollama.com/library/glm-4.6
+  - https://ollama.com/library/kimi-k2-thinking
+  - https://ollama.com/library/kimi-k2
+  - https://ollama.com/library/minimax-m2
+  - https://ollama.com/library/qwen3-coder 480b
 
 
 ### Make solid
