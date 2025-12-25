@@ -357,6 +357,10 @@ function addAssistantMessage(content, functionResults)
       {
         html += renderTable(result);
       }
+      else if( result.type === 'diagram' )
+      {
+        html += renderDiagram(result);
+      }
       else if( result.type === 'error' )
       {
         html += renderError(result);
@@ -421,6 +425,119 @@ function renderTable(result)
   html += '</div>';
   
   return html;
+}
+
+function renderDiagram(result)
+{
+  const chartId = 'chart-' + Math.random().toString(36).substr(2, 9);
+  
+  let html = '<div class="result-diagram">';
+  
+  if( result.title )
+  {
+    html += `<div class="diagram-title">${escapeHtml(result.title)}</div>`;
+  }
+  
+  html += `<div class="chart-container">
+    <canvas id="${chartId}"></canvas>
+  </div>`;
+  
+  html += '</div>';
+  
+  setTimeout(() =>
+  {
+    createChart(chartId, result);
+  }, 100);
+  
+  return html;
+}
+
+function createChart(chartId, result)
+{
+  const canvas = document.getElementById(chartId);
+  if( !canvas )
+    return;
+  
+  const ctx = canvas.getContext('2d');
+  
+  const colorPalette = [
+    'rgba(59, 130, 246, 0.8)',
+    'rgba(16, 185, 129, 0.8)',
+    'rgba(249, 115, 22, 0.8)',
+    'rgba(139, 92, 246, 0.8)',
+    'rgba(236, 72, 153, 0.8)',
+    'rgba(245, 158, 11, 0.8)',
+    'rgba(20, 184, 166, 0.8)',
+    'rgba(239, 68, 68, 0.8)',
+    'rgba(168, 85, 247, 0.8)',
+    'rgba(34, 197, 94, 0.8)'
+  ];
+  
+  const borderColorPalette = [
+    'rgba(59, 130, 246, 1)',
+    'rgba(16, 185, 129, 1)',
+    'rgba(249, 115, 22, 1)',
+    'rgba(139, 92, 246, 1)',
+    'rgba(236, 72, 153, 1)',
+    'rgba(245, 158, 11, 1)',
+    'rgba(20, 184, 166, 1)',
+    'rgba(239, 68, 68, 1)',
+    'rgba(168, 85, 247, 1)',
+    'rgba(34, 197, 94, 1)'
+  ];
+  
+  const datasets = result.datasets.map((dataset, index) =>
+  {
+    const isPieType = ['pie', 'doughnut', 'polarArea'].includes(result.chart_type);
+    
+    return {
+      label: dataset.label,
+      data: dataset.data,
+      backgroundColor: isPieType ? colorPalette : colorPalette[index % colorPalette.length],
+      borderColor: isPieType ? borderColorPalette : borderColorPalette[index % borderColorPalette.length],
+      borderWidth: 2,
+      tension: result.chart_type === 'line' ? 0.4 : 0
+    };
+  });
+  
+  new Chart(ctx, {
+    type: result.chart_type,
+    data: {
+      labels: result.labels,
+      datasets: datasets
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      aspectRatio: 2,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top'
+        },
+        tooltip: {
+          enabled: true,
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          padding: 12,
+          titleFont: { size: 14 },
+          bodyFont: { size: 13 }
+        }
+      },
+      scales: ['pie', 'doughnut', 'polarArea', 'radar'].includes(result.chart_type) ? {} : {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            font: { size: 11 }
+          }
+        },
+        x: {
+          ticks: {
+            font: { size: 11 }
+          }
+        }
+      }
+    }
+  });
 }
 
 function renderError(result)

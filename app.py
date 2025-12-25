@@ -6,9 +6,23 @@ import uuid
 from datetime import datetime
 import os
 from llm_provider import create_llm_provider
+import logging
+from logging.handlers import RotatingFileHandler
 
 app = Flask(__name__)
 app.config.from_object(config['development'])  # tASK: what about production?
+
+if not os.path.exists('logs'):
+  os.makedirs('logs')
+
+file_handler = RotatingFileHandler('logs/app.log', maxBytes=10240000, backupCount=10)
+file_handler.setFormatter(logging.Formatter(
+  '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
+))
+file_handler.setLevel(logging.INFO)
+app.logger.addHandler(file_handler)
+app.logger.setLevel(logging.INFO)
+app.logger.info('Sales Assistant startup')
 
 llm_client = create_llm_provider(app.config['LLM_PROVIDER'], config['development'])
 
@@ -53,6 +67,41 @@ tools = [
         }
       },
       'required': ['table_name']
+    }
+  },
+  {
+    'name': 'generate_diagram',
+    'description': 'Generate a visual diagram/chart to present data insights. Use this when data is better understood visually (trends, comparisons, distributions). Choose the most appropriate chart type for the data.',
+    'parameters': {
+      'type': 'object',
+      'properties': {
+        'chart_type': {
+          'type': 'string',
+          'description': 'Type of chart to generate',
+          'enum': ['bar', 'line', 'pie', 'doughnut', 'radar', 'polarArea']
+        },
+        'title': {
+          'type': 'string',
+          'description': 'Chart title'
+        },
+        'labels': {
+          'type': 'array',
+          'description': 'Labels for the data points (e.g., product names, months, categories)',
+          'items': {'type': 'string'}
+        },
+        'datasets': {
+          'type': 'array',
+          'description': 'Array of datasets to plot. Each dataset contains label and data values.',
+          'items': {
+            'type': 'object',
+            'properties': {
+              'label': {'type': 'string', 'description': 'Dataset label'},
+              'data': {'type': 'array', 'items': {'type': 'number'}, 'description': 'Numeric data values'}
+            }
+          }
+        }
+      },
+      'required': ['chart_type', 'title', 'labels', 'datasets']
     }
   }
 ]
@@ -120,6 +169,15 @@ def execute_function_call(function_name, function_args):
         'type': 'error',
         'error': result['error']
       }
+  
+  elif function_name == 'generate_diagram':
+    return {
+      'type': 'diagram',
+      'chart_type': function_args.get('chart_type', 'bar'),
+      'title': function_args.get('title', ''),
+      'labels': function_args.get('labels', []),
+      'datasets': function_args.get('datasets', [])
+    }
   
   return {'type': 'error', 'error': f'Unknown function: {function_name}'}
 
@@ -198,7 +256,11 @@ def chat():
             function_name = function_call.name if hasattr(function_call, 'name') and function_call.name else None
             if not function_name:
               continue
-            function_args = dict(function_call.args) if hasattr(function_call, 'args') else {}
+            
+            if hasattr(function_call, 'args'):
+              function_args = function_call.args if isinstance(function_call.args, dict) else dict(function_call.args)
+            else:
+              function_args = {}
             
             result = execute_function_call(function_name, function_args)
             function_results.append(result)
@@ -238,15 +300,21 @@ def chat():
     })
   
   except Exception as e:
+    app.logger.error(f'Error in chat endpoint: {str(e)}', exc_info=True)
+    
     error_message = str(e)
     is_critical = True
     
     if 'rate' in error_message.lower() or 'quota' in error_message.lower() or 'limit' in error_message.lower():
       is_critical = False
       error_message = 'Rate limit reached. Please wait a moment and try again.'
+      app.logger.warning(f'Rate limit hit for conversation {conversation_id}')
     elif 'timeout' in error_message.lower() or 'connection' in error_message.lower():
       is_critical = False
       error_message = 'Connection issue. Please try again.'
+      app.logger.warning(f'Connection issue for conversation {conversation_id}')
+    else:
+      app.logger.error(f'Critical error for conversation {conversation_id}: {error_message}')
     
     if conversation_id and conversations:
       try:
@@ -259,8 +327,8 @@ def chat():
             'timestamp': datetime.now().isoformat()
           })
           save_conversations(conversations)
-      except:
-        pass
+      except Exception as save_error:
+        app.logger.error(f'Failed to save error to conversation: {str(save_error)}')
     
     return jsonify({
       'error': error_message,
@@ -287,6 +355,7 @@ def get_conversations():
     return jsonify({'conversations': conversation_list})
   
   except Exception as e:
+    app.logger.error(f'Error loading conversations: {str(e)}', exc_info=True)
     return jsonify({'error': str(e)}), 500
 
 @app.route('/api/conversations/<conversation_id>', methods=['GET'])
@@ -296,11 +365,13 @@ def get_conversation(conversation_id):
     conversation = conversations.get(conversation_id)
     
     if not conversation:
+      app.logger.warning(f'Conversation not found: {conversation_id}')
       return jsonify({'error': 'Conversation missing'}), 404
     
     return jsonify(conversation)
   
   except Exception as e:
+    app.logger.error(f'Error getting conversation {conversation_id}: {str(e)}', exc_info=True)
     return jsonify({'error': str(e)}), 500
 
 @app.route('/api/conversations/<conversation_id>', methods=['DELETE'])
@@ -309,14 +380,17 @@ def delete_conversation(conversation_id):
     conversations = load_conversations()
     
     if conversation_id not in conversations:
+      app.logger.warning(f'Attempted to delete non-existent conversation: {conversation_id}')
       return jsonify({'error': 'Conversation missing'}), 404
     
     del conversations[conversation_id]
     save_conversations(conversations)
+    app.logger.info(f'Deleted conversation: {conversation_id}')
     
     return jsonify({'success': True})
   
   except Exception as e:
+    app.logger.error(f'Error deleting conversation {conversation_id}: {str(e)}', exc_info=True)
     return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':

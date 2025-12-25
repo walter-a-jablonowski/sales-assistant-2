@@ -2,11 +2,13 @@
 See also
 
 - AI Biz > Sell AI apps
+- misc/dev_info
 
 
-- [ ] maybe tell the ai in the prompt that it may use markdown
-  - simple rendering added, maybe use te one from overview
-- [ ] add a quick diagramming feature?
+- [ ] ability to launch a question again
+- [ ] Modify when table/text/diagr appear ?
+  - Tables are no sep tool because they're from execute_sql_query("SELECT * FROM customers LIMIT 5")
+  - Diagr are a sep tool
 
 - [ ]
 
@@ -34,18 +36,18 @@ See also
   - gpt-oss:120b-cloud
   - deepseek-v3.1:671b-cloud 
 
+- [ ] maybe tell the ai in the prompt that it may use markdown, so that it uses that every time
+  - simple rendering added, maybe use te one from overview
 
 - [ ] maybe make a second (cooler) UI design (keep current for dev demo)
-- [ ] max it prod was 5
 
 
 ### Make solid
 
 - [ ] try stuff
-
 - [ ] see minor code tasks
 
-- [x] Verify if we already satisfy this requirement:
+- [x] Verify if we already satisfy this requirement
 
   To ensure that the LLM writes valid SQL, ensure that:
 
@@ -62,8 +64,22 @@ See also
     ```
     (Verified: `db_helpers.py` contains `validate_sql_against_schema` which checks tables and columns against the schema before execution)
 
+
 Done
 ----------------------------------------------------------
+
+### 2025-12-25
+
+- [x] add a quick diagramming feature?
+  ```
+  Can we give the AI the ability to generate a result diagram if that this makes sense to present the result? Currently the AI presents results as table and text. The AI chooses the best type of diagram for this. I's duggest to use a popular diagramming library.
+  ```
+
+  - [x] Explain: Why is making a table no mcp tool while making a diagram is one?
+
+- [x] get_db_connection, get_schema_dict, validate_sql_against_schema exists 2 times
+- [x] you added generate_diagram as tool, explain why it is missing in mcp_server.py
+- [x] max it prod was 5
 
 ### 2025-12-22
 

@@ -3,6 +3,12 @@ import re
 from fastmcp import FastMCP
 import config
 
+# The functions get_db_connection, get_schema_dict, and validate_sql_against_schema
+# are duplicated from db_helpers.py. This is intentional:
+# - This MCP server runs as a standalone process independent of the Flask app
+# - Duplicating these functions avoids cross-dependencies between components
+# - Each component can be deployed/run separately without the other
+
 mcp = FastMCP('Sales Database Server')
 
 DB_PATH = config.DB_PATH
@@ -212,6 +218,23 @@ def get_sample_data(table_name: str, limit: int = 5) -> str:
     return f"SQL Error: {str(e)}"
   except Exception as e:
     return f"Error: {str(e)}"
+
+@mcp.tool()
+def generate_diagram(chart_type: str, title: str, labels: list, datasets: list) -> str:
+  """
+  Generate a visual diagram/chart to present data insights.
+  Use this when data is better understood visually (trends, comparisons, distributions).
+  
+  Args:
+    chart_type: Type of chart (bar, line, pie, doughnut, radar, polarArea)
+    title: Chart title
+    labels: Labels for data points (e.g., product names, months, categories)
+    datasets: Array of datasets with label and data values
+  
+  Returns:
+    Confirmation message that diagram was generated
+  """
+  return f"Diagram '{title}' created successfully with {len(labels)} data points using {chart_type} chart."
 
 if __name__ == '__main__':
   mcp.run()

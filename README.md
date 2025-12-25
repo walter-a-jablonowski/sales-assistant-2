@@ -97,3 +97,7 @@ Edit `config.py` or `.env` to change settings:
 - "What were the sales sum last month?"
 - "Which products have low stock?"
 - "Show me recent orders with status 'processing'"
+
+## Debugging
+
+- added error logging logs/app.log

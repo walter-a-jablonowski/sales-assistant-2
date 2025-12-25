@@ -2,6 +2,12 @@ import sqlite3
 import re
 from config import Config
 
+# The functions get_db_connection, get_schema_dict, and validate_sql_against_schema
+# are duplicated in mcp_server.py. This is intentional:
+# - db_helpers.py: Used by the Flask web application (app.py)
+# - mcp_server.py: Standalone MCP server that runs independently
+# The duplication allows each component to run without dependencies on the other.
+
 def get_db_connection():
   conn = sqlite3.connect(Config.DB_PATH)
   conn.row_factory = sqlite3.Row

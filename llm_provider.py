@@ -83,13 +83,21 @@ class OllamaProvider(LLMProvider):
             })
           elif 'function_call' in part:
             func_call = part['function_call']
+            
+            if hasattr(func_call, 'name'):
+              func_name = func_call.name
+              func_args = func_call.args if isinstance(func_call.args, dict) else dict(func_call.args)
+            else:
+              func_name = func_call.get('name', '')
+              func_args = func_call.get('args', {})
+            
             messages.append({
               'role': role,
               'content': '',
               'tool_calls': [{
                 'function': {
-                  'name': func_call.get('name', ''),
-                  'arguments': json.dumps(dict(func_call.get('args', {})))
+                  'name': func_name,
+                  'arguments': func_args
                 }
               }]
             })
