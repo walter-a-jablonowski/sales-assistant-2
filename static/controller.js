@@ -386,9 +386,15 @@ function renderTable(result)
   
   if( result.query )
   {
-    html += `<div class="sql-query">
-      <strong>SQL Query:</strong>
-      <code>${escapeHtml(result.query)}</code>
+    const queryId = 'query-' + Math.random().toString(36).substr(2, 9);
+    html += `<div class="sql-query-collapsible">
+      <button class="sql-query-toggle" onclick="toggleSqlQuery('${queryId}')">
+        <span class="toggle-icon">▶</span>
+        <span class="toggle-label">SQL Query</span>
+      </button>
+      <div class="sql-query-content" id="${queryId}">
+        <code>${escapeHtml(result.query)}</code>
+      </div>
     </div>`;
   }
   
@@ -547,9 +553,15 @@ function renderError(result)
   
   if( result.query )
   {
-    html += `<div class="sql-query">
-      <strong>Query:</strong>
-      <code>${escapeHtml(result.query)}</code>
+    const queryId = 'query-' + Math.random().toString(36).substr(2, 9);
+    html += `<div class="sql-query-collapsible">
+      <button class="sql-query-toggle" onclick="toggleSqlQuery('${queryId}')">
+        <span class="toggle-icon">▶</span>
+        <span class="toggle-label">Query</span>
+      </button>
+      <div class="sql-query-content" id="${queryId}">
+        <code>${escapeHtml(result.query)}</code>
+      </div>
     </div>`;
   }
   
@@ -661,6 +673,24 @@ function formatDate(isoString)
     return `${diffDays}d ago`;
   
   return date.toLocaleDateString();
+}
+
+function toggleSqlQuery(queryId)
+{
+  const content = document.getElementById(queryId);
+  const button = content.previousElementSibling;
+  const icon = button.querySelector('.toggle-icon');
+  
+  if( content.classList.contains('expanded') )
+  {
+    content.classList.remove('expanded');
+    icon.textContent = '▶';
+  }
+  else
+  {
+    content.classList.add('expanded');
+    icon.textContent = '▼';
+  }
 }
 
 function showDeleteDialog()

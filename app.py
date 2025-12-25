@@ -139,7 +139,7 @@ def execute_function_call(function_name, function_args):
     if result['success']:
       return {
         'type': 'table',
-        'query': query if app.config['SHOW_SQL_QUERIES'] else None,
+        'query': query,
         'columns': result['columns'],
         'rows': result['rows'],
         'row_count': result['row_count']
@@ -148,7 +148,7 @@ def execute_function_call(function_name, function_args):
       return {
         'type': 'error',
         'error': result['error'],
-        'query': query if app.config['SHOW_SQL_QUERIES'] else None
+        'query': query
       }
   
   elif function_name == 'get_sample_data':

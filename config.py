@@ -8,7 +8,6 @@ class Config:
   SECRET_KEY         = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production'
   DB_PATH            = 'sales.db'
   DEBUG              = False
-  SHOW_SQL_QUERIES   = True
   
   LLM_PROVIDER       = os.environ.get('LLM_PROVIDER', 'gemini')
   
@@ -63,12 +62,10 @@ RESPONSE STYLE:
 
 class ProductionConfig(Config):
   DEBUG = False
-  SHOW_SQL_QUERIES = False
   MAX_ITERATIONS = 5
 
 class DevelopmentConfig(Config):
   DEBUG = True
-  SHOW_SQL_QUERIES = True
 
 config = {
   'development': DevelopmentConfig,

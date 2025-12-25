@@ -14,17 +14,30 @@ See also
 
   - duckdb-nsql:7b
 
-  - [ ] llama3.2       returns only some json with current prompt
+  - [-] llama3.2       returns only some json with current prompt
   
   - [x] Qwen2.5-coder  less good with current prompt
   - [-] gemma3:12b     
   - [-] gemma3         no support for tools
   - [ ] mistral:7b     
 
+  Capable local
+
+  - [ ] Llama 4 (Scout/Maverick)          67  -   245 GB
+  - [ ] GPT-OSS (120B)                    14  - >  65 GB
+  - [ ] DeepSeek-R1 (70B)         43 GB   5.2 -   404 GB
+  - [ ] Qwen3-coder
+
   Ollama has cloud models you can run via Ollama CLI without local GPU limits:
   https://ollama.com/blog/cloud-models?utm_source=chatgpt.com
 
-  - https://ollama.com/library/gemini-3-flash-preview
+  - large models
+    - https://ollama.com/library/gemini-3-flash-preview
+    - deepseek-v3.1:671b-cloud
+    - gpt-oss:120b-cloud
+    - qwen3-coder:480b-cloud
+    - Qwen3 (235B)
+    - Llama 3.1 (405B)
   - lmsys coder
     - https://ollama.com/library/glm-4.6
     - https://ollama.com/library/kimi-k2-thinking
@@ -32,13 +45,10 @@ See also
     - https://ollama.com/library/minimax-m2
     - https://ollama.com/library/qwen3-coder 480b
 
-  - qwen3-coder:480b-cloud
-  - gpt-oss:120b-cloud
-  - deepseek-v3.1:671b-cloud 
-
 - [ ] maybe tell the ai in the prompt that it may use markdown, so that it uses that every time
   - simple rendering added, maybe use te one from overview
 
+- [ ] make sql foldable a little nicer
 - [ ] maybe make a second (cooler) UI design (keep current for dev demo)
 
 
@@ -69,6 +79,8 @@ Done
 ----------------------------------------------------------
 
 ### 2025-12-25
+
+- [x] Currently the generated SQL query is shown in debug mode. Could we change that to always visible but inside a folded element? Make sure it looks good in the UI.
 
 - [x] add a quick diagramming feature?
   ```

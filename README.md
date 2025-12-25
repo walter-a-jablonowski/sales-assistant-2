@@ -78,7 +78,6 @@ Edit `config.py` or `.env` to change settings:
 
 **Application Settings:**
 - `DEBUG`: Enable/disable debug mode
-- `SHOW_SQL_QUERIES`: Show/hide SQL queries in responses (always true in dev config, see DevelopmentConfig)
 - `DB_PATH`: Path to SQLite database
 - `MAX_ITERATIONS`: Maximum LLM iterations for tool calls (default: 5)
 
