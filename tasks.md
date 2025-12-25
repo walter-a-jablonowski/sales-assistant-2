@@ -5,10 +5,19 @@ See also
 - misc/dev_info
 
 
-- [ ] ability to launch a question again
+- [ ] Text output seems to be missing
+- [ ] There seems to be an empty message when I re-run a message
+  <div class="message assistant-message"><div class="message-content"></div></div>
+
+- [ ] maybe upd the limited ai use msg if limits in ollama as well
+- [ ] maybe tell the ai in the prompt that it may use markdown, so that it uses that every time
+  - simple rendering added, maybe use te one from overview
+
 - [ ] Modify when table/text/diagr appear ?
   - Tables are no sep tool because they're from execute_sql_query("SELECT * FROM customers LIMIT 5")
   - Diagr are a sep tool
+
+- [ ] maybe make a second (cooler) UI design (keep current for dev demo)
 
 - [ ]
 
@@ -45,12 +54,6 @@ See also
     - https://ollama.com/library/minimax-m2
     - https://ollama.com/library/qwen3-coder 480b
 
-- [ ] maybe tell the ai in the prompt that it may use markdown, so that it uses that every time
-  - simple rendering added, maybe use te one from overview
-
-- [ ] make sql foldable a little nicer
-- [ ] maybe make a second (cooler) UI design (keep current for dev demo)
-
 
 ### Make solid
 
@@ -79,6 +82,20 @@ Done
 ----------------------------------------------------------
 
 ### 2025-12-25
+
+- [x] ability to launch a question again
+  ```
+  Can we add the ability to launch a user question that was already processed by the ai again? Make it editable and when the user runs it again replace all following old conversation.
+  ```
+  - [x]
+    - There is a horizontal line visible below "SQL Query" when it is folded, remove it 
+
+    Restarting messages:
+
+    - It would be better if we could edit the question in place instead of copying it to user-input
+    - Also the AI output must replace the original AI output. This is just like how ChatGPT does it. Currently the new LLM outout is appended below. 
+
+- [x] Make the sql-query-toggle look simpler: no bg color or border
 
 - [x] Add a config setting DEMO_MODE. When this is set to true display a small below chat-input-container with the text "powered by © Walter A. Jablonowski 2025". Make sure it looks good with the design.
 

@@ -137,11 +137,11 @@ async function loadConversation(conversationId)
     const chatMessages = document.getElementById('chat-messages');
     chatMessages.innerHTML = '';
     
-    conversation.messages.forEach(msg =>
+    conversation.messages.forEach((msg, index) =>
     {
       if( msg.role === 'user' )
       {
-        addUserMessage(msg.content);
+        addUserMessage(msg.content, index);
       }
       else if( msg.role === 'assistant' )
       {
@@ -320,7 +320,7 @@ async function handleSubmit(e)
   }
 }
 
-function addUserMessage(content)
+function addUserMessage(content, messageIndex = null)
 {
   const chatMessages = document.getElementById('chat-messages');
   
@@ -330,9 +330,20 @@ function addUserMessage(content)
   
   const messageDiv = document.createElement('div');
   messageDiv.className = 'message user-message';
+  if( messageIndex !== null )
+  {
+    messageDiv.dataset.messageIndex = messageIndex;
+  }
+  
   messageDiv.innerHTML = `
     <div class="message-content">
       <div class="message-text">${escapeHtml(content)}</div>
+      <button class="edit-message-btn" onclick="editUserMessage(${messageIndex})" title="Edit and re-run">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+        </svg>
+      </button>
     </div>
   `;
   
@@ -690,6 +701,153 @@ function toggleSqlQuery(queryId)
   {
     content.classList.add('expanded');
     icon.textContent = '▼';
+  }
+}
+
+async function editUserMessage(messageIndex)
+{
+  if( !currentConversationId )
+    return;
+  
+  try
+  {
+    const response = await fetch(`/api/conversations/${currentConversationId}`);
+    const conversation = await response.json();
+    
+    if( !conversation.messages[messageIndex] || conversation.messages[messageIndex].role !== 'user' )
+      return;
+    
+    const originalMessage = conversation.messages[messageIndex].content;
+    
+    const messageDiv = document.querySelector(`.user-message[data-message-index="${messageIndex}"]`);
+    if( !messageDiv )
+      return;
+    
+    const messageTextDiv = messageDiv.querySelector('.message-text');
+    const editBtn = messageDiv.querySelector('.edit-message-btn');
+    
+    editBtn.style.display = 'none';
+    
+    const textarea = document.createElement('textarea');
+    textarea.className = 'edit-message-textarea';
+    textarea.value = originalMessage;
+    textarea.rows = Math.min(10, originalMessage.split('\n').length + 1);
+    
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'edit-message-actions';
+    
+    const saveBtn = document.createElement('button');
+    saveBtn.className = 'edit-save-btn';
+    saveBtn.textContent = 'Save & Re-run';
+    
+    const cancelBtn = document.createElement('button');
+    cancelBtn.className = 'edit-cancel-btn';
+    cancelBtn.textContent = 'Cancel';
+    
+    buttonContainer.appendChild(saveBtn);
+    buttonContainer.appendChild(cancelBtn);
+    
+    messageTextDiv.style.display = 'none';
+    messageDiv.querySelector('.message-content').appendChild(textarea);
+    messageDiv.querySelector('.message-content').appendChild(buttonContainer);
+    
+    textarea.focus();
+    textarea.select();
+    
+    const cleanup = () =>
+    {
+      textarea.remove();
+      buttonContainer.remove();
+      messageTextDiv.style.display = 'block';
+      editBtn.style.display = 'block';
+    };
+    
+    cancelBtn.onclick = cleanup;
+    
+    saveBtn.onclick = async () =>
+    {
+      const editedMessage = textarea.value.trim();
+      if( !editedMessage )
+        return;
+      
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Processing...';
+      
+      try
+      {
+        const chatMessages = document.getElementById('chat-messages');
+        const messagesToRemove = [];
+        let foundTarget = false;
+        
+        chatMessages.querySelectorAll('.message').forEach(msg =>
+        {
+          if( msg === messageDiv )
+          {
+            foundTarget = true;
+            return;
+          }
+          if( foundTarget )
+          {
+            messagesToRemove.push(msg);
+          }
+        });
+        
+        messagesToRemove.forEach(msg => msg.remove());
+        
+        cleanup();
+        messageTextDiv.textContent = editedMessage;
+        
+        const loadingDiv = addLoadingMessage();
+        
+        const rerunResponse = await fetch('/api/chat/rerun', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            conversation_id: currentConversationId,
+            message_index: messageIndex,
+            new_message: editedMessage
+          })
+        });
+        
+        loadingDiv.remove();
+        
+        if( rerunResponse.ok )
+        {
+          const result = await rerunResponse.json();
+          
+          const updatedConv = await fetch(`/api/conversations/${currentConversationId}`);
+          const updatedConversation = await updatedConv.json();
+          
+          for( let i = messageIndex + 1; i < updatedConversation.messages.length; i++ )
+          {
+            const msg = updatedConversation.messages[i];
+            if( msg.role === 'assistant' )
+            {
+              addAssistantMessage(msg.content, msg.function_results || []);
+            }
+            else if( msg.role === 'error' )
+            {
+              addErrorMessage(msg.content, msg.is_critical || false);
+            }
+          }
+        }
+        else
+        {
+          addErrorMessage('Failed to re-run message', false);
+        }
+      }
+      catch( error )
+      {
+        console.error('Error re-running message:', error);
+        addErrorMessage('Failed to re-run message', false);
+        cleanup();
+      }
+    };
+  }
+  catch( error )
+  {
+    console.error('Error editing message:', error);
+    addErrorMessage('Failed to edit message', false);
   }
 }
 

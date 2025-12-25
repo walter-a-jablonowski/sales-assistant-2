@@ -395,5 +395,144 @@ def delete_conversation(conversation_id):
     app.logger.error(f'Error deleting conversation {conversation_id}: {str(e)}', exc_info=True)
     return jsonify({'error': str(e)}), 500
 
+@app.route('/api/chat/rerun', methods=['POST'])
+def rerun_message():
+  try:
+    data = request.json
+    conversation_id = data.get('conversation_id')
+    message_index = data.get('message_index')
+    new_message = data.get('new_message', '').strip()
+    
+    if not conversation_id or message_index is None or not new_message:
+      return jsonify({'error': 'Missing required parameters'}), 400
+    
+    conversations = load_conversations()
+    
+    if conversation_id not in conversations:
+      return jsonify({'error': 'Conversation not found'}), 404
+    
+    conversation = conversations[conversation_id]
+    
+    if message_index >= len(conversation['messages']):
+      return jsonify({'error': 'Invalid message index'}), 400
+    
+    conversation['messages'] = conversation['messages'][:message_index]
+    
+    conversation['messages'].append({
+      'role': 'user',
+      'content': new_message,
+      'timestamp': datetime.now().isoformat()
+    })
+    
+    save_conversations(conversations)
+    
+    chat_history = []
+    for msg in conversation['messages']:
+      if msg['role'] == 'user':
+        chat_history.append({'role': 'user', 'parts': [{'text': msg['content']}]})
+      elif msg['role'] == 'assistant':
+        parts = []
+        if msg.get('content'):
+          parts.append({'text': msg['content']})
+        if msg.get('function_results'):
+          for func_result in msg['function_results']:
+            parts.append({
+              'function_call': {
+                'name': func_result.get('name', ''),
+                'args': func_result.get('args', {})
+              }
+            })
+            parts.append({
+              'function_response': {
+                'name': func_result.get('name', ''),
+                'response': func_result
+              }
+            })
+        if parts:
+          chat_history.append({'role': 'model', 'parts': parts})
+    
+    iteration = 0
+    while iteration < app.config['MAX_ITERATIONS']:
+      iteration += 1
+      
+      response = llm_client.generate_content(
+        contents=chat_history,
+        system_instruction=app.config['SYSTEM_PROMPT'],
+        tools=[{'function_declarations': tools}]
+      )
+      
+      assistant_text = ''
+      current_function_calls = []
+      
+      for part in response.parts:
+        if hasattr(part, 'function_call'):
+          current_function_calls.append(part.function_call)
+        elif hasattr(part, 'text'):
+          assistant_text += part.text
+      
+      if current_function_calls:
+        function_results = []
+        
+        for function_call in current_function_calls:
+          function_name = function_call.name if hasattr(function_call, 'name') and function_call.name else None
+          if not function_name:
+            continue
+          
+          if hasattr(function_call, 'args'):
+            function_args = function_call.args if isinstance(function_call.args, dict) else dict(function_call.args)
+          else:
+            function_args = {}
+          
+          result = execute_function_call(function_name, function_args)
+          result['name'] = function_name
+          result['args'] = function_args
+          function_results.append(result)
+        
+        conversation['messages'].append({
+          'role': 'assistant',
+          'content': assistant_text,
+          'function_results': function_results,
+          'timestamp': datetime.now().isoformat()
+        })
+        
+        save_conversations(conversations)
+        
+        chat_history.append({'role': 'model', 'parts': [{'text': assistant_text}] if assistant_text else []})
+        
+        for func_result in function_results:
+          chat_history[-1]['parts'].append({
+            'function_call': {
+              'name': func_result['name'],
+              'args': func_result['args']
+            }
+          })
+          chat_history.append({
+            'role': 'function',
+            'parts': [{
+              'function_response': {
+                'name': func_result['name'],
+                'response': func_result
+              }
+            }]
+          })
+        
+        if assistant_text:
+          break
+      else:
+        conversation['messages'].append({
+          'role': 'assistant',
+          'content': assistant_text,
+          'timestamp': datetime.now().isoformat()
+        })
+        
+        save_conversations(conversations)
+        break
+    
+    return jsonify({'success': True, 'conversation_id': conversation_id})
+  
+  except Exception as e:
+    app.logger.error(f'Error in rerun endpoint: {str(e)}', exc_info=True)
+    return jsonify({'error': str(e)}), 500
+
 if __name__ == '__main__':
   app.run(debug=app.config['DEBUG'], port=5000)
