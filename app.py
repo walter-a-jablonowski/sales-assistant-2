@@ -183,7 +183,9 @@ def execute_function_call(function_name, function_args):
 
 @app.route('/')
 def index():
-  return render_template('index.html', show_limited_ai_warning=app.config['SHOW_LIMITED_AI_WARNING'])
+  return render_template('index.html', 
+    show_limited_ai_warning=app.config['SHOW_LIMITED_AI_WARNING'],
+    demo_mode=app.config['DEMO_MODE'])
 
 @app.route('/api/chat', methods=['POST'])
 def chat():

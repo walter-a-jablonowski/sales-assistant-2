@@ -80,6 +80,8 @@ Done
 
 ### 2025-12-25
 
+- [x] Add a config setting DEMO_MODE. When this is set to true display a small below chat-input-container with the text "powered by © Walter A. Jablonowski 2025". Make sure it looks good with the design.
+
 - [x] Currently the generated SQL query is shown in debug mode. Could we change that to always visible but inside a folded element? Make sure it looks good in the UI.
 
 - [x] add a quick diagramming feature?

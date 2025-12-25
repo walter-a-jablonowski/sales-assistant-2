@@ -8,6 +8,7 @@ class Config:
   SECRET_KEY         = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production'
   DB_PATH            = 'sales.db'
   DEBUG              = False
+  DEMO_MODE          = os.environ.get('DEMO_MODE', 'false').lower() == 'true'
   
   LLM_PROVIDER       = os.environ.get('LLM_PROVIDER', 'gemini')
   
