@@ -25,8 +25,8 @@ maybe Del
 
 - [x] Qwen2.5-coder        less good with current prompt
 - [-] llama3.2             returns only some json with current prompt
-- glm4:latest              if no good
-- qwen2.5-coder:14b        try if better as the smalle one
+- [ ] glm4:latest          if no good (high in lmsys)
+- [ ] qwen2.5-coder:14b    try if better as the smalle one
 
 Spec
 
@@ -36,8 +36,9 @@ Capable local
 (if available: mistral:7b-q4_k, quantization shrink VRAM + RAM needs drastically with minimal quality loss)
 
 - [-] deepseek-r1:8b  no support for tools
-- [ ] gpt-oss:20b
+- [?] gpt-oss:20b     model requires more system memory (9.9 GiB) than is available (7.6 GiB)
 - [ ] mistral:7b      Partially tools, but isn't inherently optimized for tool calling like gpt-oss
+- [?] qwen3-coder     ChatGPT: 4 GB VRAM is far too small
 
 Ollama cloud (limits)
 
@@ -49,11 +50,11 @@ Ollama cloud (limits)
   - Qwen3 (235B)
   - Llama 3.1 (405B)
 - lmsys coder
-  - https://ollama.com/library/glm-4.6
-  - https://ollama.com/library/kimi-k2-thinking
-  - https://ollama.com/library/kimi-k2
-  - https://ollama.com/library/minimax-m2
-  - https://ollama.com/library/qwen3-coder 480b
+  - glm-4.6:cloud           https://ollama.com/library/glm-4.6           these might be premium models (unavailable)
+  -                         https://ollama.com/library/kimi-k2-thinking
+  - kimi-k2:1t-cloud        https://ollama.com/library/kimi-k2
+  -                         https://ollama.com/library/minimax-m2
+  - qwen3-coder:480b-cloud  https://ollama.com/library/qwen3-coder 480b
 
 
 ### Make solid
