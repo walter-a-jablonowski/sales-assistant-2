@@ -37,7 +37,7 @@ Capable local
 
 - [-] deepseek-r1:8b  no support for tools
 - [?] gpt-oss:20b     model requires more system memory (9.9 GiB) than is available (7.6 GiB)
-- [ ] mistral:7b      Partially tools, but isn't inherently optimized for tool calling like gpt-oss
+- [?] mistral:7b      slow, less good results with current prompt
 - [?] qwen3-coder     ChatGPT: 4 GB VRAM is far too small
 
 Ollama cloud (limits)
