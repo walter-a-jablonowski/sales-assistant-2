@@ -1,0 +1,295 @@
+{
+  "5817075a-1a16-47f0-833e-06a2c27ec364": {
+    "id": "5817075a-1a16-47f0-833e-06a2c27ec364",
+    "title": "What were the sales sum last month?",
+    "created_at": "2025-12-26T16:34:05.517854",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What were the sales sum last month?",
+        "timestamp": "2025-12-26T16:34:05.517854"
+      },
+      {
+        "role": "assistant",
+        "content": "",
+        "function_results": [
+          {
+            "type": "text",
+            "content": "\nTable: customers\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - name: TEXT NOT NULL\n  - email: TEXT NOT NULL\n  - phone: TEXT\n  - city: TEXT\n  - country: TEXT\n  - created_at: TEXT NOT NULL\n\nTable: order_items\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - order_id: INTEGER NOT NULL\n  - product_id: INTEGER NOT NULL\n  - quantity: INTEGER NOT NULL\n  - unit_price: REAL NOT NULL\n  - subsum: REAL NOT NULL\n\nTable: orders\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - customer_id: INTEGER NOT NULL\n  - order_date: TEXT NOT NULL\n  - status: TEXT NOT NULL\n  - amount_sum: REAL NOT NULL\n\nTable: products\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - name: TEXT NOT NULL\n  - category: TEXT NOT NULL\n  - price: REAL NOT NULL\n  - stock_quantity: INTEGER NOT NULL\n  - created_at: TEXT NOT NULL\n\nTable: sqlite_sequence\nColumns:\n  - name: \n  - seq: "
+          },
+          {
+            "type": "table",
+            "table_name": "orders",
+            "columns": [
+              "id",
+              "customer_id",
+              "order_date",
+              "status",
+              "amount_sum"
+            ],
+            "rows": [
+              [
+                "1",
+                "5",
+                "2025-06-18T14:34:48.720329",
+                "completed",
+                "499.98"
+              ],
+              [
+                "2",
+                "9",
+                "2025-06-18T14:34:48.721934",
+                "completed",
+                "8589.72"
+              ],
+              [
+                "3",
+                "10",
+                "2025-06-20T14:34:48.721934",
+                "processing",
+                "7862.75"
+              ],
+              [
+                "4",
+                "5",
+                "2025-06-22T14:34:48.721934",
+                "processing",
+                "799.89"
+              ],
+              [
+                "5",
+                "9",
+                "2025-06-21T14:34:48.721934",
+                "completed",
+                "9639.9"
+              ]
+            ],
+            "row_count": 5
+          }
+        ],
+        "timestamp": "2025-12-26T16:34:15.981796"
+      }
+    ]
+  },
+  "f44a679f-5682-45eb-b18d-675b4d1c6526": {
+    "id": "f44a679f-5682-45eb-b18d-675b4d1c6526",
+    "title": "What are the highest paying clients (customers) by...",
+    "created_at": "2025-12-26T16:34:58.767174",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What are the highest paying clients (customers) by order value? (Please avoid the word \"total\" when you respond)",
+        "timestamp": "2025-12-26T16:34:58.767174"
+      },
+      {
+        "role": "assistant",
+        "content": "The following are the top 10 clients by their order value:\n\nThe top 10 clients, ranked by their purchase value, are:\n\n*   **Northern Enterprises** with **$45,314.03**\n*   **Midwest Manufacturing** with **$45,121.11**\n*   **Pacific Rim Industries** with **$44,311.46**\n*   **Acme Corporation** with **$42,436.66**\n*   **European Imports Ltd** with **$39,838.12**\n*   **Southern Supplies Co** with **$37,753.61**\n*   **Coastal Distributors** with **$36,978.96**\n*   **Asia Pacific Trading** with **$29,823.90**\n*   **Alpine Trading GmbH** with **$24,229.93**\n*   **Global Tech Solutions** with **$22,187.26**\n\nThese clients represent the highest contributors to the company's revenue, with Northern Enterprises leading the group.\n\n",
+        "function_results": [
+          {
+            "type": "error",
+            "error": "Error: Column 'customer_name' missing in any queried table. Check schema.",
+            "query": "\nSELECT\n  c.customer_name,\n  SUM(o.order_value) AS client_spend\nFROM customers AS c\nJOIN orders AS o\n  ON c.customer_id = o.customer_id\nGROUP BY\n  c.customer_name\nORDER BY\n  client_spend DESC\nLIMIT 10;\n"
+          },
+          {
+            "type": "text",
+            "content": "\nTable: customers\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - name: TEXT NOT NULL\n  - email: TEXT NOT NULL\n  - phone: TEXT\n  - city: TEXT\n  - country: TEXT\n  - created_at: TEXT NOT NULL\n\nTable: order_items\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - order_id: INTEGER NOT NULL\n  - product_id: INTEGER NOT NULL\n  - quantity: INTEGER NOT NULL\n  - unit_price: REAL NOT NULL\n  - subsum: REAL NOT NULL\n\nTable: orders\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - customer_id: INTEGER NOT NULL\n  - order_date: TEXT NOT NULL\n  - status: TEXT NOT NULL\n  - amount_sum: REAL NOT NULL\n\nTable: products\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - name: TEXT NOT NULL\n  - category: TEXT NOT NULL\n  - price: REAL NOT NULL\n  - stock_quantity: INTEGER NOT NULL\n  - created_at: TEXT NOT NULL\n\nTable: sqlite_sequence\nColumns:\n  - name: \n  - seq: "
+          },
+          {
+            "type": "table",
+            "query": "\nSELECT\n  c.name AS customer_name,\n  SUM(o.amount_sum) AS client_spend\nFROM customers AS c\nJOIN orders AS o\n  ON c.id = o.customer_id\nGROUP BY\n  c.name\nORDER BY\n  client_spend DESC\nLIMIT 10;\n",
+            "columns": [
+              "customer_name",
+              "client_spend"
+            ],
+            "rows": [
+              [
+                "Northern Enterprises",
+                "45314.03"
+              ],
+              [
+                "Midwest Manufacturing",
+                "45121.11"
+              ],
+              [
+                "Pacific Rim Industries",
+                "44311.45999999999"
+              ],
+              [
+                "Acme Corporation",
+                "42436.66"
+              ],
+              [
+                "European Imports Ltd",
+                "39838.119999999995"
+              ],
+              [
+                "Southern Supplies Co",
+                "37753.60999999999"
+              ],
+              [
+                "Coastal Distributors",
+                "36978.96"
+              ],
+              [
+                "Asia Pacific Trading",
+                "29823.9"
+              ],
+              [
+                "Alpine Trading GmbH",
+                "24229.930000000004"
+              ],
+              [
+                "Global Tech Solutions",
+                "22187.260000000002"
+              ]
+            ],
+            "row_count": 10
+          },
+          {
+            "type": "diagram",
+            "chart_type": "bar",
+            "title": "Top 10 Clients by Order Value",
+            "labels": [
+              "Northern Enterprises",
+              "Midwest Manufacturing",
+              "Pacific Rim Industries",
+              "Acme Corporation",
+              "European Imports Ltd",
+              "Southern Supplies Co",
+              "Coastal Distributors",
+              "Asia Pacific Trading",
+              "Alpine Trading GmbH",
+              "Global Tech Solutions"
+            ],
+            "datasets": [
+              {
+                "label": "Client Spend",
+                "data": [
+                  45314.03,
+                  45121.11,
+                  44311.45999999999,
+                  42436.66,
+                  39838.119999999995,
+                  37753.60999999999,
+                  36978.96,
+                  29823.9,
+                  24229.930000000004,
+                  22187.260000000002
+                ]
+              }
+            ]
+          }
+        ],
+        "timestamp": "2025-12-26T16:35:08.555091"
+      }
+    ]
+  },
+  "6aba49f9-5ba3-48a6-a951-6f999dbbac50": {
+    "id": "6aba49f9-5ba3-48a6-a951-6f999dbbac50",
+    "title": "What are the highest paying clients by order value...",
+    "created_at": "2025-12-26T16:50:51.256768",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What are the highest paying clients by order value? (Please avoid the words \"total\", \"top\" and \"rank\" when you respond)",
+        "timestamp": "2025-12-26T16:50:51.256768"
+      },
+      {
+        "role": "assistant",
+        "content": "The clients contributing the most significantly by order value are led by **Northern Enterprises** with an order value of **$45,314.03**, closely followed by **Midwest Manufacturing** at **$45,121.11**, and **Pacific Rim Industries** with **$44,311.46**. These figures indicate that these three clients are key contributors to the overall sales performance.",
+        "function_results": [
+          {
+            "type": "text",
+            "content": "\nTable: customers\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - name: TEXT NOT NULL\n  - email: TEXT NOT NULL\n  - phone: TEXT\n  - city: TEXT\n  - country: TEXT\n  - created_at: TEXT NOT NULL\n\nTable: order_items\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - order_id: INTEGER NOT NULL\n  - product_id: INTEGER NOT NULL\n  - quantity: INTEGER NOT NULL\n  - unit_price: REAL NOT NULL\n  - subsum: REAL NOT NULL\n\nTable: orders\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - customer_id: INTEGER NOT NULL\n  - order_date: TEXT NOT NULL\n  - status: TEXT NOT NULL\n  - amount_sum: REAL NOT NULL\n\nTable: products\nColumns:\n  - id: INTEGER (PRIMARY KEY)\n  - name: TEXT NOT NULL\n  - category: TEXT NOT NULL\n  - price: REAL NOT NULL\n  - stock_quantity: INTEGER NOT NULL\n  - created_at: TEXT NOT NULL\n\nTable: sqlite_sequence\nColumns:\n  - name: \n  - seq: "
+          },
+          {
+            "type": "table",
+            "query": "SELECT c.name AS client_name, SUM(o.amount_sum) AS order_value FROM customers c JOIN orders o ON c.id = o.customer_id GROUP BY c.name ORDER BY order_value DESC LIMIT 10",
+            "columns": [
+              "client_name",
+              "order_value"
+            ],
+            "rows": [
+              [
+                "Northern Enterprises",
+                "45314.03"
+              ],
+              [
+                "Midwest Manufacturing",
+                "45121.11"
+              ],
+              [
+                "Pacific Rim Industries",
+                "44311.45999999999"
+              ],
+              [
+                "Acme Corporation",
+                "42436.66"
+              ],
+              [
+                "European Imports Ltd",
+                "39838.119999999995"
+              ],
+              [
+                "Southern Supplies Co",
+                "37753.60999999999"
+              ],
+              [
+                "Coastal Distributors",
+                "36978.96"
+              ],
+              [
+                "Asia Pacific Trading",
+                "29823.9"
+              ],
+              [
+                "Alpine Trading GmbH",
+                "24229.930000000004"
+              ],
+              [
+                "Global Tech Solutions",
+                "22187.260000000002"
+              ]
+            ],
+            "row_count": 10
+          },
+          {
+            "type": "diagram",
+            "chart_type": "bar",
+            "title": "Highest Paying Clients by Order Value",
+            "labels": [
+              "Northern Enterprises",
+              "Midwest Manufacturing",
+              "Pacific Rim Industries",
+              "Acme Corporation",
+              "European Imports Ltd",
+              "Southern Supplies Co",
+              "Coastal Distributors",
+              "Asia Pacific Trading",
+              "Alpine Trading GmbH",
+              "Global Tech Solutions"
+            ],
+            "datasets": [
+              {
+                "data": [
+                  45314.03,
+                  45121.11,
+                  44311.45999999999,
+                  42436.66,
+                  39838.119999999995,
+                  37753.60999999999,
+                  36978.96,
+                  29823.9,
+                  24229.930000000004,
+                  22187.260000000002
+                ],
+                "label": "Order Value"
+              }
+            ]
+          }
+        ],
+        "timestamp": "2025-12-26T16:50:59.647127"
+      }
+    ]
+  }
+}
