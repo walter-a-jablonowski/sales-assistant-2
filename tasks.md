@@ -25,14 +25,14 @@ maybe Del
 
 - [x] Qwen2.5-coder        less good with current prompt
 - [-] llama3.2             returns only some json with current prompt
-- [ ] glm4:latest          if no good (high in lmsys)
-- [ ] qwen2.5-coder:14b    try if better as the smalle one
+- [-] glm4:latest          no support for tools
+- [-] qwen2.5-coder:14b    ugly response with current prompt
 
-Spec
+Spec (can o diagrams ?)
 
 - [ ] duckdb-nsql:7b
 
-Capable local
+Capable local (less usful, models too big)
 (if available: mistral:7b-q4_k, quantization shrink VRAM + RAM needs drastically with minimal quality loss)
 
 - [-] deepseek-r1:8b  no support for tools
