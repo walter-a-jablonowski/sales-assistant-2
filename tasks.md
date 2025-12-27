@@ -5,7 +5,11 @@ See also
 - misc/dev_info
 
 
+This app currently supports Gemini Flash or Ollama for LLM access. I#d like to add OpenRouter as a third option.
+
+
 - [ ] Text output seems to be missing
+  - maybe cause of problems with small models
 
 - [ ] maybe tell the ai in the prompt that it may use markdown, so that it uses that every time
   - simple rendering added, maybe use te one from overview

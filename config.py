@@ -18,6 +18,9 @@ class Config:
   OLLAMA_BASE_URL    = os.environ.get('OLLAMA_BASE_URL', 'http://localhost:11434')
   OLLAMA_MODEL       = os.environ.get('OLLAMA_MODEL', 'llama3.2')
   
+  OPENROUTER_API_KEY = os.environ.get('OPENROUTER_API_KEY')
+  OPENROUTER_MODEL   = os.environ.get('OPENROUTER_MODEL', 'anthropic/claude-3.5-sonnet')
+  
   MAX_ITERATIONS     = 5
   CONVERSATIONS_FILE = 'data/conversations.json'
   

@@ -185,6 +185,8 @@ def execute_function_call(function_name, function_args):
 def index():
   if app.config['LLM_PROVIDER'] == 'gemini':
     model_name = app.config['GEMINI_MODEL']
+  elif app.config['LLM_PROVIDER'] == 'openrouter':
+    model_name = app.config['OPENROUTER_MODEL']
   else:
     model_name = app.config['OLLAMA_MODEL']
   
