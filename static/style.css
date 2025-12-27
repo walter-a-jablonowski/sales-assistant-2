@@ -414,6 +414,10 @@ body {
   font-size: 15px;
 }
 
+.no-indent {
+  padding-left: 20px;
+}
+
 .result-table {
   margin-bottom: 16px;
 }

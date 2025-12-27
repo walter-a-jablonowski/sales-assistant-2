@@ -657,18 +657,36 @@ function escapeHtml(text)
 
 function markdownToHtml(text)
 {
-  if( !text )
+  if( ! text || typeof text === 'undefined' )
     return '';
   
-  let html = escapeHtml(text);
-  
-  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
-  html = html.replace(/_(.+?)_/g, '<em>$1</em>');
-  html = html.replace(/`(.+?)`/g, '<code>$1</code>');
-  html = html.replace(/\n/g, '<br>');
-  
-  return html;
+  try {
+
+    marked.setOptions({
+      gfm: true,
+      breaks: false,
+      pedantic: false,
+      langPrefix: 'language-'
+    });
+    
+    let html = marked.parse(text);
+    
+    // Post-process to remove paragraph wrapping from list items
+    html = html.replace(/<li>\s*<p>(.*?)<\/p>\s*<\/li>/gs, '<li>$1</li>');
+    
+    // Add no-indent class to ul elements to match PHP rendering
+    html = html.replace(/<ul>/gi, '<ul class="no-indent">');
+    html = html.replace(/<ul class="([^"]*)"/gi, '<ul class="$1 no-indent"');
+    
+    // Add target="_blank" to all links for opening in new tab
+    html = html.replace(/<a href=/gi, '<a target="_blank" rel="noopener noreferrer" href=');
+    
+    return html;
+  }
+  catch( error ) {
+    console.error('Error rendering markdown:', error);
+    return text;  // return text if rendering fails
+  }
 }
 
 function formatDate(isoString)

@@ -6,11 +6,8 @@ See also
 - models
 
 
-This app currently supports Gemini Flash or Ollama for LLM access. I#d like to add OpenRouter as a third option.
-
-
-- [ ] Text output seems to be missing
-  - maybe cause of problems with small models
+- [ ] url timestamps
+- [ ] Looks like a query error is displayed even if the LLM fixes it itself (hide this)
 
 - [ ] maybe tell the ai in the prompt that it may use markdown, so that it uses that every time
   - simple rendering added, maybe use te one from overview
@@ -20,6 +17,9 @@ This app currently supports Gemini Flash or Ollama for LLM access. I#d like to a
   - Diagr are a sep tool
 
 - [ ] maybe make a second (cooler) UI design (keep current for dev demo)
+
+- [?] Text output seems to be missing
+  - maybe cause of problems with small models
 
 
 ### Make solid
@@ -47,6 +47,41 @@ This app currently supports Gemini Flash or Ollama for LLM access. I#d like to a
 
 Done
 ----------------------------------------------------------
+
+### 2025-12-27
+
+- [x] We currently have a simple markdown rendering (markdownToHtml). I'd like to upgrade this. Below you find a sample based on marked.js with custom stuff
+
+  marked.setOptions({
+    gfm: true,
+    breaks: false,
+    pedantic: false,
+    // Ensure language classes like "language-js" for fenced code blocks
+    langPrefix: 'language-'
+  });
+
+  let html = marked.parse(markdownText);
+
+  // Post-process to remove paragraph wrapping from list items
+  html = html.replace(/<li>\s*<p>(.*?)<\/p>\s*<\/li>/gs, '<li>$1</li>');
+
+  // Add no-indent class to ul elements to match PHP rendering
+  html = html.replace(/<ul>/gi, '<ul class="no-indent">');
+  html = html.replace(/<ul class="([^"]*)"/gi, '<ul class="$1 no-indent"');
+
+  // Add target="_blank" to all links for opening in new tab
+  html = html.replace(/<a href=/gi, '<a target="_blank" rel="noopener noreferrer" href=');
+
+  return html;
+
+
+  Styles:
+
+  .no-indent {
+    padding-left: 20px;
+  }
+
+- [x] This app currently supports Gemini Flash or Ollama for LLM access. I#d like to add OpenRouter as a third option.
 
 ### 2025-12-25
 
