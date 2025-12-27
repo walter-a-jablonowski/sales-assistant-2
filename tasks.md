@@ -6,6 +6,12 @@ See also
 - models
 
 
+Currently this application is limited to a single database sales.db that was made by init_db.py. I want to be able to query multiple databases with this app over the single chat interface.
+
+- Make a file init_db_2.py that makes a second SQLite database. The data must be related to the existing database.
+- The LLM must decide where to query the data. It may also query multiple databases to aanswer the user's question.
+- Currently we are using SQLite for dev purposes only. but later We can use different databases as well (SQLite, MySQL, or any relational database). So, maybe it makes sense to have an unified interface for that.
+
 - [ ] url timestamps
 - [ ] Looks like a query error is displayed even if the LLM fixes it itself (hide this)
 
@@ -43,6 +49,10 @@ See also
         reject
     ```
     (Verified: `db_helpers.py` contains `validate_sql_against_schema` which checks tables and columns against the schema before execution)
+
+### Advacned
+
+- Some kind of glue files that tells the LLM how multiple databases are related?
 
 
 Done
